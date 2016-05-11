@@ -9,7 +9,6 @@
 #import "EUExQupai.h"
 #import "EUtility.h"
 #import "JSON.h"
-
 @interface EUExQupai ()
 @property(nonatomic,assign) CGFloat minDuration;
 @property(nonatomic,assign) CGFloat maxDuration;
@@ -17,12 +16,13 @@
 @property(nonatomic,assign) CGFloat width;
 @property(nonatomic,assign) CGFloat height;
 @property(nonatomic,assign) CGFloat beautySkinRate;
+@property(nonatomic,strong) UIViewController *controller;
 @property int cameraFrontOn;
 @property BOOL openBeautySkin ;
 @end
 @implementation EUExQupai
 - (id)initWithBrwView:(EBrowserView *)eInBrwView{
-    if (self = [super initWithBrwView:eInBrwView]) {
+    if (self = [super initWithBrwView:eInBrwView]){
         
     }
     return self;
@@ -48,7 +48,6 @@
         [EUtility brwView:self.meBrwView evaluateScript:jsString];
     } failure:^(NSError *error) {
         NSDictionary *dic = [NSDictionary dictionary];
-
         dic = @{@"status" :@(1),@"error":@(error.code)};
         NSString *results = [dic JSONFragment];
         NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
@@ -61,8 +60,6 @@
         return;
     }
     id info=[inArguments[0] JSONValue];
-    //self.sdk = [QupaiSDK shared];
-    //[self.sdk setDelegte:(id<QupaiSDKDelegate>)self];
     self.minDuration = [[info objectForKey:@"minDuration"] floatValue]?:2;
     self.maxDuration = [[info objectForKey:@"maxDuration"] floatValue]?:8;
     self.rate = [[info objectForKey:@"rate"] floatValue]?:2000000;
@@ -77,7 +74,7 @@
 -(void)record:(NSMutableArray *)inArguments{
     QupaiSDK *sdk = [QupaiSDK shared];
     [sdk setDelegte:(id<QupaiSDKDelegate>)self];
-    /*可选设置*/
+    //可选设置
     sdk.thumbnailCompressionQuality = 0.3;
     sdk.combine = YES;
     sdk.progressIndicatorEnabled = YES;
@@ -94,23 +91,32 @@
                                                                             maxDuration:self.maxDuration
                                                                                 bitRate:self.rate
                                                                               videoSize:videoSize];
-    
-    [EUtility brwView:meBrwView presentModalViewController:recordController animated:YES];
+    self.controller = recordController;
+    [EUtility brwView:self.meBrwView presentModalViewController:recordController animated:YES];
+   
 
 
 }
 #pragma mark - QupaiSDK Delegate
 
 - (void)qupaiSDKCancel:(QupaiSDK *)sdk{
-    [[EUtility brwCtrl:meBrwView] dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.controller dismissViewControllerAnimated:YES completion:^{
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        }];
+    });
+    
 }
-
 
 - (void)qupaiSDK:(QupaiSDK *)sdk compeleteVideoPath:(NSString *)videoPath thumbnailPath:(NSString *)thumbnailPath
 {
     NSLog(@"Qupai SDK compelete %@",videoPath);
     NSDictionary *dic = [NSDictionary dictionary];
-    [[EUtility brwCtrl:meBrwView] dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.controller dismissViewControllerAnimated:YES completion:^{
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        }];
+    });
     if (videoPath && thumbnailPath) {
         dic = @{@"thumbPath":thumbnailPath,@"videoPath":videoPath};
         NSString *results = [dic JSONFragment];

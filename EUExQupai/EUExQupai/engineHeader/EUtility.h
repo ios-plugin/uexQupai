@@ -70,4 +70,5 @@ void PluginLog(NSString *format, ...);
 //20140616 softToken
 +(NSString*)md5SoftToken;
 +(void)setRootViewGestureRecognizerEnabled:(BOOL)isEnable;
++ (void)brwView:(EBrowserView *)inBrwView presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion;
 @end

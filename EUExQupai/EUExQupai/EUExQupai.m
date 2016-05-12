@@ -117,13 +117,93 @@
             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         }];
     });
+    
     if (videoPath && thumbnailPath) {
-        dic = @{@"thumbPath":thumbnailPath,@"videoPath":videoPath};
+        NSData *data = [[NSData alloc]initWithContentsOfFile:videoPath];
+        NSString *videoPath1 = [self saveMessageDataToLocalPath:data];
+        UIImage *image = [[UIImage alloc]initWithContentsOfFile:thumbnailPath];
+        thumbnailPath = [self saveImage:image quality:0.8 usePng:YES];
+        dic = @{@"thumbPath":thumbnailPath,@"videoPath":videoPath1};
         NSString *results = [dic JSONFragment];
         NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbRecord){uexQupai.cbRecord('%@');}",results];
         [EUtility brwView:self.meBrwView evaluateScript:jsString];
     }
     
+    
+}
+//图片\音频的保存路径
+- (NSString *)getImageSaveDirPath{
+    NSString *tempPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/apps"];
+    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:[EUtility brwViewWidgetId:self.meBrwView]];
+    
+    return [wgtTempPath stringByAppendingPathComponent:@"uexQupai"];
+}
+//图片\音频的保存路径
+- (NSString *)getAudioSaveDirPath{
+    NSString *tempPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/apps"];
+    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:[EUtility brwViewWidgetId:self.meBrwView]];
+    
+    return [wgtTempPath stringByAppendingPathComponent:@"uexQupai"];
+}
+-(NSString *) saveMessageDataToLocalPath:(NSData *)messageData
+{
+    
+    if (!messageData) {
+        return nil;
+    }
+    NSFileManager *fmanager = [NSFileManager defaultManager];
+    NSString *uexImageSaveDir=[self getAudioSaveDirPath];
+    if (![fmanager fileExistsAtPath:uexImageSaveDir]) {
+        [fmanager createDirectoryAtPath:uexImageSaveDir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *timeStr = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSinceReferenceDate]];
+    
+    NSString *imgName = [NSString stringWithFormat:@"%@.%@",[timeStr substringFromIndex:([timeStr length]-6)],@"mp4"];
+    NSString *imgTmpPath = [uexImageSaveDir stringByAppendingPathComponent:imgName];
+    if ([fmanager fileExistsAtPath:imgTmpPath]) {
+        [fmanager removeItemAtPath:imgTmpPath error:nil];
+    }
+    if([messageData writeToFile:imgTmpPath atomically:YES]){
+        return imgTmpPath;
+    }else{
+        return nil;
+    }
+    
+    
+}
+
+- (NSString *)saveImage:(UIImage *)image quality:(CGFloat)quality usePng:(BOOL)usePng{
+    NSData *imageData;
+    NSString *imageSuffix;
+    if(usePng){
+        imageData=UIImagePNGRepresentation(image);
+        imageSuffix=@"png";
+    }else{
+        imageData=UIImageJPEGRepresentation(image, quality);
+        imageSuffix=@"jpg";
+    }
+    
+    
+    if(!imageData) return nil;
+    
+    NSFileManager *fmanager = [NSFileManager defaultManager];
+    
+    NSString *uexImageSaveDir=[self getImageSaveDirPath];
+    if (![fmanager fileExistsAtPath:uexImageSaveDir]) {
+        [fmanager createDirectoryAtPath:uexImageSaveDir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *timeStr = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSinceReferenceDate]];
+    
+    NSString *imgName = [NSString stringWithFormat:@"%@.%@",[timeStr substringFromIndex:([timeStr length]-6)],imageSuffix];
+    NSString *imgTmpPath = [uexImageSaveDir stringByAppendingPathComponent:imgName];
+    if ([fmanager fileExistsAtPath:imgTmpPath]) {
+        [fmanager removeItemAtPath:imgTmpPath error:nil];
+    }
+    if([imageData writeToFile:imgTmpPath atomically:YES]){
+        return imgTmpPath;
+    }else{
+        return nil;
+    }
     
 }
 

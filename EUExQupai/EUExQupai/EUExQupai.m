@@ -34,15 +34,15 @@
     }
     id info=[inArguments[0] JSONValue];
     NSString *appKey = [info objectForKey:@"appKey"];
-     NSString *appSecret = [info objectForKey:@"appSecret"];
-     NSString *space = [info objectForKey:@"space"];
-
+    NSString *appSecret = [info objectForKey:@"appSecret"];
+    NSString *space = [info objectForKey:@"space"];
+    
     
     [[QupaiSDK shared] registerAppWithKey:appKey secret:appSecret space:space success:^(NSString *accessToken){
         NSLog(@"%@",accessToken);
         NSDictionary *dic = [NSDictionary dictionary];
-
-     dic = @{@"status" :@(0)};
+        
+        dic = @{@"status" :@(0)};
         NSString *results = [dic JSONFragment];
         NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
         [EUtility brwView:self.meBrwView evaluateScript:jsString];
@@ -65,8 +65,17 @@
     self.rate = [[info objectForKey:@"rate"] floatValue]?:2000000;
     self.width = [[info objectForKey:@"width"] floatValue]?:320;
     self.height = [[info objectForKey:@"height"] floatValue]?:480;
-    self.cameraFrontOn = [[info objectForKey:@"cameraFrontOn"] boolValue]?0:1;
-    self.openBeautySkin = [[info objectForKey:@"openBeautySkin"] boolValue]?NO:YES;
+    if ([info objectForKey:@"cameraFrontOn"] == nil) {
+        self.cameraFrontOn = 1;
+    }else{
+        self.cameraFrontOn = [[info objectForKey:@"cameraFrontOn"] boolValue]?1:0;
+    }
+    if ([info objectForKey:@"openBeautySkin"] == nil) {
+        self.openBeautySkin = YES;
+    } else {
+        self.openBeautySkin = [[info objectForKey:@"openBeautySkin"] boolValue]?YES:NO;
+    }
+    
     self.beautySkinRate = [[info objectForKey:@"beautySkinRate"] floatValue]/100?:0.8;
     
     
@@ -93,9 +102,9 @@
                                                                               videoSize:videoSize];
     self.controller = recordController;
     [EUtility brwView:self.meBrwView presentModalViewController:recordController animated:YES];
-   
-
-
+    
+    
+    
 }
 #pragma mark - QupaiSDK Delegate
 

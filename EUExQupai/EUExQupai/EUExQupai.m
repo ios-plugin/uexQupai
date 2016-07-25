@@ -8,7 +8,7 @@
 
 #import "EUExQupai.h"
 #import "EUtility.h"
-#import "JSON.h"
+
 @interface EUExQupai ()
 @property(nonatomic,assign) CGFloat minDuration;
 @property(nonatomic,assign) CGFloat maxDuration;
@@ -17,22 +17,18 @@
 @property(nonatomic,assign) CGFloat height;
 @property(nonatomic,assign) CGFloat beautySkinRate;
 @property(nonatomic,strong) UIViewController *controller;
+@property(nonatomic,strong) ACJSFunctionRef *func;
 @property int cameraFrontOn;
 @property BOOL openBeautySkin ;
 @end
 @implementation EUExQupai
-- (id)initWithBrwView:(EBrowserView *)eInBrwView{
-    if (self = [super initWithBrwView:eInBrwView]){
-        
-    }
-    return self;
-    
-}
+
 -(void)init:(NSMutableArray *)inArguments{
     if(inArguments.count<1){
         return;
     }
-    id info=[inArguments[0] JSONValue];
+    ACJSFunctionRef *func = ac_JSFunctionArg(inArguments.lastObject);
+    id info=[inArguments[0] ac_JSONValue];
     NSString *appKey = [info objectForKey:@"appKey"];
     NSString *appSecret = [info objectForKey:@"appSecret"];
     NSString *space = [info objectForKey:@"space"];
@@ -43,15 +39,19 @@
         NSDictionary *dic = [NSDictionary dictionary];
         
         dic = @{@"status" :@(0)};
-        NSString *results = [dic JSONFragment];
-        NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
-        [EUtility brwView:self.meBrwView evaluateScript:jsString];
+        NSString *results = [dic ac_JSONFragment];
+        //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
+        //[EUtility brwView:self.meBrwView evaluateScript:jsString];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbInit" arguments:ACArgsPack(results)];
+        [func executeWithArguments:ACArgsPack(dic)];
     } failure:^(NSError *error) {
         NSDictionary *dic = [NSDictionary dictionary];
         dic = @{@"status" :@(1),@"error":@(error.code)};
-        NSString *results = [dic JSONFragment];
-        NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
-        [EUtility brwView:self.meBrwView evaluateScript:jsString];
+        NSString *results = [dic ac_JSONFragment];
+        //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
+        //[EUtility brwView:self.meBrwView evaluateScript:jsString];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbInit" arguments:ACArgsPack(results)];
+        [func executeWithArguments:ACArgsPack(dic)];
     }];
     
 }
@@ -59,7 +59,7 @@
     if(inArguments.count<1){
         return;
     }
-    id info=[inArguments[0] JSONValue];
+    id info=[inArguments[0] ac_JSONValue];
     self.minDuration = [[info objectForKey:@"minDuration"] floatValue]?:2;
     self.maxDuration = [[info objectForKey:@"maxDuration"] floatValue]?:8;
     self.rate = [[info objectForKey:@"rate"] floatValue]?:2000000;
@@ -81,6 +81,8 @@
     
 }
 -(void)record:(NSMutableArray *)inArguments{
+    ACJSFunctionRef *func = ac_JSFunctionArg(inArguments.lastObject);
+    self.func = func;
     QupaiSDK *sdk = [QupaiSDK shared];
     [sdk setDelegte:(id<QupaiSDKDelegate>)self];
     //可选设置
@@ -101,8 +103,8 @@
                                                                                 bitRate:self.rate
                                                                               videoSize:videoSize];
     self.controller = recordController;
-    [EUtility brwView:self.meBrwView presentModalViewController:recordController animated:YES];
-    
+    //[EUtility brwView:self.meBrwView presentModalViewController:recordController animated:YES];
+    [[self.webViewEngine viewController] presentViewController:recordController animated:YES completion:nil];
     
     
 }
@@ -133,9 +135,12 @@
         UIImage *image = [[UIImage alloc]initWithContentsOfFile:thumbnailPath];
         thumbnailPath = [self saveImage:image quality:0.8 usePng:YES];
         dic = @{@"thumbPath":thumbnailPath,@"videoPath":videoPath1};
-        NSString *results = [dic JSONFragment];
-        NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbRecord){uexQupai.cbRecord('%@');}",results];
-        [EUtility brwView:self.meBrwView evaluateScript:jsString];
+        NSString *results = [dic ac_JSONFragment];
+        //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbRecord){uexQupai.cbRecord('%@');}",results];
+        //[EUtility brwView:self.meBrwView evaluateScript:jsString];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbRecord" arguments:ACArgsPack(results)];
+        [self.func executeWithArguments:ACArgsPack(dic)];
+        self.func = nil;
     }
     
     
@@ -143,14 +148,14 @@
 //图片\音频的保存路径
 - (NSString *)getImageSaveDirPath{
     NSString *tempPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/apps"];
-    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:[EUtility brwViewWidgetId:self.meBrwView]];
+    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:AppCanMainWidget().widgetId];
     
     return [wgtTempPath stringByAppendingPathComponent:@"uexQupai"];
 }
 //图片\音频的保存路径
 - (NSString *)getAudioSaveDirPath{
     NSString *tempPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/apps"];
-    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:[EUtility brwViewWidgetId:self.meBrwView]];
+    NSString *wgtTempPath=[tempPath stringByAppendingPathComponent:AppCanMainWidget().widgetId];
     
     return [wgtTempPath stringByAppendingPathComponent:@"uexQupai"];
 }

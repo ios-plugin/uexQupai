@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EUExBase.h"
+#import <AppCanKit/AppCanKit.h>
 #import <ALBBQuPaiPlugin/ALBBQuPaiPlugin.h>
 @interface EUExQupai : EUExBase
 @end

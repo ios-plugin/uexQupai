@@ -43,7 +43,7 @@
         //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
         //[EUtility brwView:self.meBrwView evaluateScript:jsString];
         [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbInit" arguments:ACArgsPack(results)];
-        [func executeWithArguments:ACArgsPack(dic)];
+        [func executeWithArguments:ACArgsPack(@(0))];
     } failure:^(NSError *error) {
         NSDictionary *dic = [NSDictionary dictionary];
         dic = @{@"status" :@(1),@"error":@(error.code)};
@@ -51,7 +51,7 @@
         //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbInit){uexQupai.cbInit('%@');}",results];
         //[EUtility brwView:self.meBrwView evaluateScript:jsString];
         [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbInit" arguments:ACArgsPack(results)];
-        [func executeWithArguments:ACArgsPack(dic)];
+        [func executeWithArguments:ACArgsPack(@(1),@(error.code))];
     }];
     
 }
@@ -139,8 +139,10 @@
         //NSString *jsString = [NSString stringWithFormat:@"if(uexQupai.cbRecord){uexQupai.cbRecord('%@');}",results];
         //[EUtility brwView:self.meBrwView evaluateScript:jsString];
         [self.webViewEngine callbackWithFunctionKeyPath:@"uexQupai.cbRecord" arguments:ACArgsPack(results)];
-        [self.func executeWithArguments:ACArgsPack(dic)];
+        [self.func executeWithArguments:ACArgsPack(@(0),dic)];
         self.func = nil;
+    }else{
+        [self.func executeWithArguments:ACArgsPack(@(1))];
     }
     
     

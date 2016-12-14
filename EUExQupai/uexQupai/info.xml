@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexQupai" version="3.0.1" build="1">
-        <info>1:修改参数,与安卓统一</info>
-        <build>0:新增趣拍插件</build>
+        uexName="uexQupai" version="4.0.0" build="0">
+        <info>0:支持引擎4.0，函数入参</info>
     </plugin>
 </uexplugins>

@@ -10,6 +10,7 @@
 		09392DA51CB4A67F00169E3F /* EUExQupai.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 09392DA41CB4A67F00169E3F /* EUExQupai.h */; };
 		09392DA71CB4A67F00169E3F /* EUExQupai.m in Sources */ = {isa = PBXBuildFile; fileRef = 09392DA61CB4A67F00169E3F /* EUExQupai.m */; };
 		093EA55B1CBE36EA00186364 /* ALBBQuPaiPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093EA55A1CBE36EA00186364 /* ALBBQuPaiPlugin.framework */; };
+		215551801D3F50610011F6D1 /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2155517F1D3F50610011F6D1 /* AppCanKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,20 +30,11 @@
 		09392DA11CB4A67F00169E3F /* libuexQupai.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libuexQupai.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		09392DA41CB4A67F00169E3F /* EUExQupai.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUExQupai.h; sourceTree = "<group>"; };
 		09392DA61CB4A67F00169E3F /* EUExQupai.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EUExQupai.m; sourceTree = "<group>"; };
-		093EA54B1CBE2BD000186364 /* EUExBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBase.h; sourceTree = "<group>"; };
 		093EA54C1CBE2BD000186364 /* EUExBaseDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBaseDefine.h; sourceTree = "<group>"; };
 		093EA54D1CBE2BD000186364 /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
 		093EA54E1CBE2BD000186364 /* WidgetOneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetOneDelegate.h; sourceTree = "<group>"; };
-		093EA5511CBE2BD800186364 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		093EA5521CBE2BD800186364 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
-		093EA5531CBE2BD800186364 /* MD5Digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5Digest.h; sourceTree = "<group>"; };
-		093EA5541CBE2BD800186364 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		093EA5551CBE2BD800186364 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		093EA5561CBE2BD800186364 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		093EA5571CBE2BD800186364 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		093EA5581CBE2BD800186364 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		093EA5591CBE2BD800186364 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		093EA55A1CBE36EA00186364 /* ALBBQuPaiPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ALBBQuPaiPlugin.framework; sourceTree = "<group>"; };
+		2155517F1D3F50610011F6D1 /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				215551801D3F50610011F6D1 /* AppCanKit.framework in Frameworks */,
 				093EA55B1CBE36EA00186364 /* ALBBQuPaiPlugin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +80,6 @@
 		093EA54A1CBE2BD000186364 /* engineHeader */ = {
 			isa = PBXGroup;
 			children = (
-				093EA54B1CBE2BD000186364 /* EUExBase.h */,
 				093EA54C1CBE2BD000186364 /* EUExBaseDefine.h */,
 				093EA54D1CBE2BD000186364 /* EUtility.h */,
 				093EA54E1CBE2BD000186364 /* WidgetOneDelegate.h */,
@@ -98,26 +90,10 @@
 		093EA54F1CBE2BD800186364 /* sourceCode */ = {
 			isa = PBXGroup;
 			children = (
+				2155517F1D3F50610011F6D1 /* AppCanKit.framework */,
 				093EA55A1CBE36EA00186364 /* ALBBQuPaiPlugin.framework */,
-				093EA5501CBE2BD800186364 /* JSON */,
 			);
 			path = sourceCode;
-			sourceTree = "<group>";
-		};
-		093EA5501CBE2BD800186364 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				093EA5511CBE2BD800186364 /* JSON.h */,
-				093EA5521CBE2BD800186364 /* JSONParser.h */,
-				093EA5531CBE2BD800186364 /* MD5Digest.h */,
-				093EA5541CBE2BD800186364 /* NSObject+SBJSON.h */,
-				093EA5551CBE2BD800186364 /* NSString+SBJSON.h */,
-				093EA5561CBE2BD800186364 /* SBJSON.h */,
-				093EA5571CBE2BD800186364 /* SBJsonBase.h */,
-				093EA5581CBE2BD800186364 /* SBJsonParser.h */,
-				093EA5591CBE2BD800186364 /* SBJsonWriter.h */,
-			);
-			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
